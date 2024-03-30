@@ -18,23 +18,23 @@ SECTIONS
         *(.text .text.*);
     } > FLASH
 
-    .rodata :
+    .rodata : ALIGN(4)
     {
         *(.rodata .rodata.*);
     } > FLASH
 
-    .bss :
+    .bss : ALIGN(4)
     {
         _sbss = .;
         *(.bss .bss.*);
-        _ebss = .;
+        _ebss = ALIGN(4);
     } > RAM
 
-    .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
+    .data : AT(ADDR(.rodata) + SIZEOF(.rodata)) ALIGN(4)
     {
         _sdata = .;
         *(.data .data.*);
-        _edata = .;
+        _edata = ALIGN(4);
     } > RAM
 
     _sidata = LOADADDR(.data);
