@@ -1,6 +1,7 @@
 ENTRY(reset_handler);
 
 EXTERN(RESET_VECTOR);
+EXTERN(EXCEPTIONS);
 
 SECTIONS
 {
@@ -11,6 +12,9 @@ SECTIONS
 
         // Reset vector
         KEEP(*(.vector_table.reset_vector));
+
+        // Exception handlers
+        KEEP(*(.vector_table.exceptions));
     } > FLASH
 
     .text :
@@ -44,3 +48,12 @@ SECTIONS
         *(.ARM.exidx .ARM.exidx.*);
     }
 }
+
+PROVIDE(nmi_handler = default_exception_handler);
+PROVIDE(hard_fault_handler = default_exception_handler);
+PROVIDE(memory_management_handler = default_exception_handler);
+PROVIDE(bus_fault_handler = default_exception_handler);
+PROVIDE(usage_fault_handler = default_exception_handler);
+PROVIDE(sv_call_handler = default_exception_handler);
+PROVIDE(pending_sv_handler = default_exception_handler);
+PROVIDE(systick_handler = default_exception_handler);

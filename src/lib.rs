@@ -42,3 +42,58 @@ pub unsafe fn reset_handler() -> ! {
 
 #[link_section = ".vector_table.reset_vector"]
 pub static RESET_VECTOR: unsafe fn() -> ! = reset_handler;
+
+pub union Vector {
+    reserved: u32,
+    handler: unsafe extern "C" fn(),
+}
+
+extern "C" {
+    fn nmi_handler();
+    fn hard_fault_handler();
+    fn memory_management_handler();
+    fn bus_fault_handler();
+    fn usage_fault_handler();
+    fn sv_call_handler();
+    fn pending_sv_handler();
+    fn systick_handler();
+}
+
+#[link_section = ".vector_table.exceptions"]
+pub static EXCEPTIONS: [Vector; 14] = [
+    Vector {
+        handler: nmi_handler,
+    },
+    Vector {
+        handler: hard_fault_handler,
+    },
+    Vector {
+        handler: memory_management_handler,
+    },
+    Vector {
+        handler: bus_fault_handler,
+    },
+    Vector {
+        handler: usage_fault_handler,
+    },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector {
+        handler: sv_call_handler,
+    },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector {
+        handler: pending_sv_handler,
+    },
+    Vector {
+        handler: systick_handler,
+    },
+];
+
+#[no_mangle]
+pub fn default_exception_handler() {
+    loop {}
+}
