@@ -2,6 +2,7 @@ ENTRY(reset_handler);
 
 EXTERN(RESET_VECTOR);
 EXTERN(EXCEPTIONS);
+EXTERN(INTERRUPTS);
 
 SECTIONS
 {
@@ -15,6 +16,9 @@ SECTIONS
 
         // Exception handlers
         KEEP(*(.vector_table.exceptions));
+
+        // Non-core vectors
+        KEEP(*(.vector_table.interrupts));
     } > FLASH
 
     .text :

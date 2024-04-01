@@ -44,8 +44,8 @@ pub unsafe fn reset_handler() -> ! {
 pub static RESET_VECTOR: unsafe fn() -> ! = reset_handler;
 
 pub union Vector {
-    reserved: u32,
-    handler: unsafe extern "C" fn(),
+    pub reserved: u32,
+    pub handler: unsafe extern "C" fn(),
 }
 
 extern "C" {
@@ -97,3 +97,6 @@ pub static EXCEPTIONS: [Vector; 14] = [
 pub fn default_exception_handler() {
     loop {}
 }
+
+#[no_mangle]
+pub unsafe extern "C" fn default_interrupt_handler() {}
